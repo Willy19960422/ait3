@@ -424,69 +424,56 @@
         </div>
       </section>
 
-      <!-- 系統運行駕駛艙展示 -->
+      <!-- 產品版本動態 -->
       <section class="max-w-7xl mx-auto px-6">
         <div class="glass-card rounded-3xl p-6 sm:p-8 border-cyan-500/30 shadow-[0_0_40px_rgba(6,182,212,0.15)] space-y-6">
-          
+
           <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-5 border-b border-slate-800 gap-4">
             <div>
-              <div class="text-xs font-mono text-cyan-400 font-bold">SYSTEM RUNTIME COCKPIT</div>
-              <h3 class="text-lg font-extrabold text-white">AiT3 企業治理即時監控台</h3>
+              <div class="text-xs font-mono text-cyan-400 font-bold">PRODUCT RELEASE TIMELINE</div>
+              <h3 class="text-lg font-extrabold text-white">AiT3 產品版本動態</h3>
             </div>
-            <div class="flex items-center gap-3">
-              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/40 text-emerald-300 font-mono text-xs">
-                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-                合規履約率：96.8% (達標)
-              </span>
-              <button onclick="navigateTo('product')" class="text-xs font-bold text-cyan-400 hover:text-cyan-300 flex items-center gap-1">
-                <span>完整模組功能 →</span>
-              </button>
-            </div>
+            <button onclick="navigateTo('news')" class="text-xs font-bold text-cyan-400 hover:text-cyan-300 flex items-center gap-1">
+              <span>查看完整最新消息 →</span>
+            </button>
           </div>
 
-          <!-- 駕駛艙即時表格 -->
-          <div class="overflow-x-auto">
-            <table class="w-full text-left text-xs font-mono">
-              <thead class="bg-slate-900/80 text-slate-400 border-b border-slate-800">
-                <tr>
-                  <th class="p-3.5">受控資產編號</th>
-                  <th class="p-3.5">設備 / 資料流名稱</th>
-                  <th class="p-3.5">場域節點</th>
-                  <th class="p-3.5">ISO 27001 控制項</th>
-                  <th class="p-3.5">安全狀態</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-slate-800/60 text-slate-300 text-[11px]">
-                <tr class="hover:bg-slate-900/40 transition">
-                  <td class="p-3.5 text-cyan-300 font-bold">AST-2026-001</td>
-                  <td class="p-3.5 font-sans font-semibold text-white">ERP 核心營運資料庫 (SAP)</td>
-                  <td class="p-3.5 font-sans">南科機房 (IDC-A)</td>
-                  <td class="p-3.5">A.8.1 使用者端點設備防禦</td>
-                  <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">已存證加密</span></td>
-                </tr>
-                <tr class="hover:bg-slate-900/40 transition">
-                  <td class="p-3.5 text-cyan-300 font-bold">AST-2026-018</td>
-                  <td class="p-3.5 font-sans font-semibold text-white">CNC #05 航太精密加工五軸機台</td>
-                  <td class="p-3.5 font-sans">高雄路竹廠區</td>
-                  <td class="p-3.5">A.8.20 網路安全與隔離</td>
-                  <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">無人值守保護中</span></td>
-                </tr>
-                <tr class="hover:bg-slate-900/40 transition">
-                  <td class="p-3.5 text-cyan-300 font-bold">AST-2026-042</td>
-                  <td class="p-3.5 font-sans font-semibold text-white">連續塑膠射出溫控參數資料流</td>
-                  <td class="p-3.5 font-sans">台南永康生產線</td>
-                  <td class="p-3.5">A.5.33 營業秘密保護</td>
-                  <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">防篡改監聽正常</span></td>
-                </tr>
-                <tr class="hover:bg-slate-900/40 transition">
-                  <td class="p-3.5 text-cyan-300 font-bold">AST-2026-089</td>
-                  <td class="p-3.5 font-sans font-semibold text-white">財務部出納作業專用工作站</td>
-                  <td class="p-3.5 font-sans">總部行政中心</td>
-                  <td class="p-3.5">A.8.8 弱點管理排程</td>
-                  <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40">今日排程更新</span></td>
-                </tr>
-              </tbody>
-            </table>
+          <!-- 版本更新時間軸 -->
+          <div class="space-y-5">
+
+            <div class="flex flex-col sm:flex-row sm:items-start gap-4 p-4 rounded-2xl bg-slate-900/40 border border-slate-800/80 hover:border-cyan-500/30 transition">
+              <div class="flex items-center gap-2 sm:w-40 flex-shrink-0">
+                <span class="px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-300 text-[11px] font-mono font-bold border border-emerald-500/30">v2.6</span>
+                <span class="text-[11px] font-mono text-slate-500">2026-08-18</span>
+              </div>
+              <div class="space-y-1">
+                <h4 class="text-sm font-bold text-white">全面強化 ISO 27001:2022 條文自動映射與時間戳記驗證</h4>
+                <p class="text-xs text-slate-400 leading-relaxed">大幅提升弱點掃描排程演算速度，新增針對無專職網管環境的「無人值守流量基線阻斷機制」。</p>
+              </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row sm:items-start gap-4 p-4 rounded-2xl bg-slate-900/40 border border-slate-800/80 hover:border-cyan-500/30 transition">
+              <div class="flex items-center gap-2 sm:w-40 flex-shrink-0">
+                <span class="px-2.5 py-1 rounded bg-cyan-500/20 text-cyan-300 text-[11px] font-mono font-bold border border-cyan-500/30">法規庫</span>
+                <span class="text-[11px] font-mono text-slate-500">2026-06-15</span>
+              </div>
+              <div class="space-y-1">
+                <h4 class="text-sm font-bold text-white">3T 核心法規庫深度校驗完成</h4>
+                <p class="text-xs text-slate-400 leading-relaxed">全面校正 RAG 決策庫，確保系統每一步計算建議均 100% 依循 ISO 27001:2022 最新國際審驗標準。</p>
+              </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row sm:items-start gap-4 p-4 rounded-2xl bg-slate-900/40 border border-slate-800/80 hover:border-cyan-500/30 transition">
+              <div class="flex items-center gap-2 sm:w-40 flex-shrink-0">
+                <span class="px-2.5 py-1 rounded bg-teal-500/20 text-teal-300 text-[11px] font-mono font-bold border border-teal-500/30">活動</span>
+                <span class="text-[11px] font-mono text-slate-500">2026-05-30</span>
+              </div>
+              <div class="space-y-1">
+                <h4 class="text-sm font-bold text-white">南台灣高科技供應鏈資安合規論壇圓滿落幕</h4>
+                <p class="text-xs text-slate-400 leading-relaxed">現場實機展示動態儀表板操作，吸引近百家企業參與，深獲產業界熱烈回響。</p>
+              </div>
+            </div>
+
           </div>
 
         </div>
@@ -908,7 +895,7 @@
         </div>
         <h1 class="text-3xl sm:text-5xl font-black text-white tracking-tight">AiT3 導入費用試算</h1>
         <p class="text-slate-400 text-xs sm:text-sm max-w-xl mx-auto">
-          依據貴司規模、資產數量與導入方案，快速估算 AiT3 建置費用區間。<br>試算結果僅供參考，實際報價將由專責顧問依現場需求核實。
+          依據貴司規模、資產數量與導入方案，快速估算 AiT3 建置費用區間。試算結果僅供參考，實際報價將由專責顧問依現場需求核實。
         </p>
       </div>
 
