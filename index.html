@@ -1,0 +1,1326 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>循跡科技 TrackTech | AiT3 – 企業資安治理暨風險管理追蹤系統</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Google Fonts: Plus Jakarta Sans, Noto Sans TC, JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;600;700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0fdfa',
+              100: '#ccfbf1',
+              400: '#2dd4bf',
+              500: '#14b8a6',
+              600: '#0d9488',
+              700: '#0f766e',
+              800: '#115e59',
+              900: '#0b2138',
+              950: '#061321',
+            },
+            tech: {
+              cyan: '#06b6d4',
+              sky: '#0284c7',
+              navy: '#0a192f',
+              dark: '#070f1e',
+            }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', '"Noto Sans TC"', 'system-ui', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      font-family: '"Plus Jakarta Sans"', '"Noto Sans TC"', system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      background-color: #060e1a;
+      color: #e2e8f0;
+    }
+
+    /* 頂級科技背景：深邃典雅底色 + 精密工程點陣網格 */
+    .hero-glow-bg {
+      background-color: #060e1a;
+      background-image: 
+        radial-gradient(circle at 50% 0%, rgba(6, 182, 212, 0.15) 0%, transparent 65%),
+        radial-gradient(rgba(56, 189, 248, 0.08) 1px, transparent 1px);
+      background-size: 100% 100%, 28px 28px;
+    }
+
+    /* 精密科技微格背景（乾淨不髒亂） */
+    .tech-grid-pattern {
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 32px 32px;
+    }
+
+    /* 玻璃擬態高質感卡片 */
+    .glass-card {
+      background: rgba(10, 22, 38, 0.72);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(56, 189, 248, 0.14);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .glass-card:hover {
+      border-color: rgba(6, 182, 212, 0.5);
+      transform: translateY(-2px);
+      box-shadow: 0 16px 36px -12px rgba(6, 182, 212, 0.12);
+    }
+
+    /* 流光邊界飾條 */
+    .border-glow-top {
+      position: relative;
+    }
+    .border-glow-top::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 10%;
+      right: 10%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(6, 182, 212, 0.7), transparent);
+    }
+
+    /* 動態雷達波紋光效 */
+    @keyframes radarPulse {
+      0% { transform: scale(0.9); opacity: 0.8; }
+      50% { transform: scale(1.15); opacity: 0.3; }
+      100% { transform: scale(1.4); opacity: 0; }
+    }
+    .radar-ring {
+      animation: radarPulse 3.5s ease-out infinite;
+    }
+    .radar-ring-delayed {
+      animation: radarPulse 3.5s ease-out infinite 1.75s;
+    }
+
+    /* 緩慢旋轉星軌 */
+    @keyframes slowOrbit {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .orbit-spin {
+      animation: slowOrbit 32s linear infinite;
+    }
+    .orbit-spin-reverse {
+      animation: slowOrbit 45s linear infinite reverse;
+    }
+
+    /* 頁面切換動態 */
+    .page-fade-in {
+      animation: pageIn 0.3s ease-out forwards;
+    }
+    @keyframes pageIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* 隱藏原生滾動條但保持滾動 */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="h-full flex flex-col selection:bg-tech-cyan selection:text-slate-950 overflow-x-hidden">
+
+  <!-- 旗艦導覽列 (純文字專業版，無冗餘圖標與紅點) -->
+  <header class="sticky top-0 z-40 bg-slate-950/85 backdrop-blur-xl border-b border-slate-800/80">
+    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+      
+      <!-- 官方 LOGO 與企業主標題 -->
+      <a href="javascript:void(0)" onclick="navigateTo('home')" class="flex items-center gap-3.5 group">
+        <div class="relative w-11 h-11 rounded-2xl bg-slate-900 border border-cyan-500/40 p-2 flex items-center justify-center shadow-[0_0_20px_rgba(6,182,212,0.25)] group-hover:border-cyan-400 group-hover:shadow-[0_0_25px_rgba(6,182,212,0.4)] transition-all">
+          <img src="http://usis.com.tw/wp-content/uploads/2026/07/ait3_LOGO-scaled.png" 
+               alt="循跡科技 TrackTech" 
+               class="w-full h-full object-contain"
+               onerror="this.onerror=null; this.src='https://images.weserv.nl/?url=usis.com.tw/wp-content/uploads/2026/07/ait3_LOGO-scaled.png';" />
+          <div class="absolute -inset-0.5 rounded-2xl bg-cyan-400/10 blur opacity-0 group-hover:opacity-100 transition"></div>
+        </div>
+        <div class="flex flex-col">
+          <div class="flex items-center gap-2">
+            <span class="text-lg font-black tracking-tight text-white group-hover:text-cyan-400 transition">循跡科技</span>
+            <span class="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-cyan-950/70 text-cyan-300 border border-cyan-700/50">TrackTech</span>
+          </div>
+          <span class="text-[11px] text-slate-400 tracking-wider">AiT3 – 企業資安治理暨風險管理追蹤系統</span>
+        </div>
+      </a>
+
+      <!-- 5 大核心分頁導覽項目 -->
+      <nav class="hidden md:flex items-center gap-1.5 text-sm font-semibold">
+        <button onclick="navigateTo('home')" class="nav-btn px-4 py-2 rounded-xl text-cyan-400 bg-cyan-500/10 border border-cyan-500/30 transition" data-page="home">
+          首頁
+        </button>
+
+        <button onclick="navigateTo('news')" class="nav-btn px-4 py-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-900 border border-transparent hover:border-slate-700 transition" data-page="news">
+          最新消息
+        </button>
+
+        <button onclick="navigateTo('product')" class="nav-btn px-4 py-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-900 border border-transparent hover:border-slate-700 transition" data-page="product">
+          產品
+        </button>
+
+        <button onclick="navigateTo('about')" class="nav-btn px-4 py-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-900 border border-transparent hover:border-slate-700 transition" data-page="about">
+          關於我們
+        </button>
+
+        <button onclick="navigateTo('contact')" class="nav-btn px-4 py-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-900 border border-transparent hover:border-slate-700 transition" data-page="contact">
+          聯絡我們
+        </button>
+      </nav>
+
+      <!-- 手機選單漢堡鈕 -->
+      <div class="flex items-center md:hidden">
+        <button onclick="toggleMobileMenu()" class="p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white">
+          <i data-lucide="menu" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- 手機版下拉選單 -->
+    <div id="mobileMenu" class="hidden md:hidden px-6 py-4 bg-slate-950 border-b border-slate-800 space-y-2">
+      <button onclick="navigateTo('home'); toggleMobileMenu();" class="w-full text-left py-2 text-cyan-400 font-bold">
+        首頁
+      </button>
+      <button onclick="navigateTo('news'); toggleMobileMenu();" class="w-full text-left py-2 text-slate-300 font-semibold">
+        最新消息
+      </button>
+      <button onclick="navigateTo('product'); toggleMobileMenu();" class="w-full text-left py-2 text-slate-300 font-semibold">
+        產品
+      </button>
+      <button onclick="navigateTo('about'); toggleMobileMenu();" class="w-full text-left py-2 text-slate-300 font-semibold">
+        關於我們
+      </button>
+      <button onclick="navigateTo('contact'); toggleMobileMenu();" class="w-full text-left py-2 text-slate-300 font-semibold">
+        聯絡我們
+      </button>
+    </div>
+  </header>
+
+  <!-- 主內容容器 (SPA 動態路由) -->
+  <main class="flex-1 relative">
+
+    <!-- ==============================================
+         頁面 1：首頁 (HOME)
+         ============================================== -->
+    <div id="view-home" class="page-view space-y-20 pb-24">
+      
+      <!-- 首頁英雄主視覺 -->
+      <section class="relative min-h-[85vh] flex items-center hero-glow-bg overflow-hidden border-b border-cyan-950/60 pt-10 pb-16">
+        
+        <!-- 動態粒子連線畫布 -->
+        <canvas id="traceCanvas" class="absolute inset-0 w-full h-full pointer-events-auto opacity-70 z-0"></canvas>
+        
+        <!-- 背景光暈 -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[650px] bg-cyan-500/10 rounded-full blur-[140px] pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-6 relative z-10 w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          
+          <!-- 左側文字與數據直擊 -->
+          <div class="lg:col-span-7 space-y-6">
+            
+            <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-slate-900/80 border border-cyan-500/40 text-xs font-mono text-cyan-300 shadow-[0_0_15px_rgba(6,182,212,0.2)]">
+              <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+              <span>循跡科技股份有限公司・企業級智慧合規軟體</span>
+            </div>
+
+            <div class="space-y-2">
+              <div class="text-sm sm:text-base font-mono font-bold text-cyan-400 tracking-wide flex items-center gap-2">
+                <span>AiT3 – 企業資安治理暨風險管理追蹤系統</span>
+                <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-xs border border-emerald-500/30">旗艦主力</span>
+              </div>
+              <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.2]">
+                以獨創 <span class="bg-gradient-to-r from-cyan-400 via-teal-300 to-emerald-400 bg-clip-text text-transparent">3T 智慧引擎</span><br/>
+                重塑企業資安治理與合規新維度
+              </h1>
+            </div>
+
+            <p class="text-base sm:text-lg text-slate-300 max-w-2xl leading-relaxed font-light">
+              循跡科技主力軟體 <strong class="text-cyan-300 font-bold">AiT3</strong> 將資深主導稽核員邏輯與 RAG 決策庫深度融合，專為台灣製造業、高科技供應鏈與中小企業打造。將傳統 6–9 個月的合規時程縮短至 2–3 個月，建立不可篡改的數位存證鏈。
+            </p>
+
+            <!-- 行動按鈕 -->
+            <div class="flex flex-wrap items-center gap-4 pt-3">
+              <button onclick="navigateTo('product')" class="px-7 py-3.5 rounded-xl font-bold text-slate-950 bg-gradient-to-r from-cyan-400 via-teal-300 to-emerald-400 hover:scale-105 transition-all shadow-[0_0_30px_rgba(6,182,212,0.35)] flex items-center gap-2.5 text-sm">
+                <i data-lucide="shield" class="w-4 h-4 text-slate-950"></i>
+                <span>探索 AiT3 主力軟體規格</span>
+              </button>
+
+              <button onclick="navigateTo('news')" class="px-6 py-3.5 rounded-xl font-bold text-slate-200 bg-slate-900/80 hover:bg-slate-800 border border-slate-700 hover:border-cyan-500/50 transition flex items-center gap-2 text-sm">
+                <i data-lucide="newspaper" class="w-4 h-4 text-cyan-400"></i>
+                <span>查看最新官方消息</span>
+              </button>
+            </div>
+
+            <!-- 關鍵實證數據膠囊（自帶平滑累加動態） -->
+            <div class="pt-8 border-t border-slate-800/80 grid grid-cols-3 gap-6 max-w-lg">
+              <div>
+                <div class="text-3xl sm:text-4xl font-extrabold font-mono text-cyan-400 hero-counter" data-target="70" data-suffix="%">
+                  0<span class="text-lg text-teal-300">%</span>
+                </div>
+                <div class="text-xs text-slate-400 mt-1">縮短導入驗證時程</div>
+              </div>
+              <div>
+                <div class="text-3xl sm:text-4xl font-extrabold font-mono text-emerald-400 hero-counter" data-target="60" data-suffix="%">
+                  0<span class="text-lg text-teal-300">%</span>
+                </div>
+                <div class="text-xs text-slate-400 mt-1">降低總體建置費用</div>
+              </div>
+              <div>
+                <div class="text-3xl sm:text-4xl font-extrabold font-mono text-sky-400 hero-counter" data-target="100" data-suffix="%">
+                  0<span class="text-lg text-teal-300">%</span>
+                </div>
+                <div class="text-xs text-slate-400 mt-1">ISO 27001 條文可溯</div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- 右側高科技立體智核展台 -->
+          <div class="lg:col-span-5 flex justify-center relative">
+            
+            <div class="relative w-80 h-80 sm:w-96 sm:h-96 flex items-center justify-center">
+              
+              <!-- 擴散動態雷達環 -->
+              <div class="absolute inset-0 rounded-full border border-cyan-500/40 radar-ring"></div>
+              <div class="absolute inset-0 rounded-full border border-teal-500/30 radar-ring-delayed"></div>
+
+              <!-- 旋轉軌道飾圈 -->
+              <div class="absolute w-[110%] h-[110%] rounded-full border border-dashed border-cyan-500/25 orbit-spin"></div>
+              <div class="absolute w-[80%] h-[80%] rounded-full border border-dashed border-teal-500/20 orbit-spin-reverse"></div>
+
+              <!-- 懸浮的核心智核容器 -->
+              <div class="relative w-64 h-64 sm:w-72 sm:h-72 rounded-3xl bg-gradient-to-b from-slate-900/90 to-slate-950/90 border border-cyan-400/40 p-6 flex flex-col items-center justify-center shadow-[0_0_60px_rgba(6,182,212,0.3)] backdrop-blur-2xl">
+                
+                <!-- 官方高解析 LOGO -->
+                <div class="w-36 h-36 relative flex items-center justify-center">
+                  <div class="absolute inset-0 bg-cyan-400/20 rounded-full blur-xl animate-pulse"></div>
+                  <img src="http://usis.com.tw/wp-content/uploads/2026/07/ait3_LOGO-scaled.png" 
+                       alt="AiT3 Logo" 
+                       class="w-full h-full object-contain relative z-10 drop-shadow-[0_0_20px_rgba(6,182,212,0.6)]"
+                       onerror="this.onerror=null; this.src='https://images.weserv.nl/?url=usis.com.tw/wp-content/uploads/2026/07/ait3_LOGO-scaled.png';" />
+                </div>
+
+                <!-- 智核數據標籤 -->
+                <div class="mt-4 text-center">
+                  <div class="text-sm font-extrabold tracking-wider text-white flex items-center justify-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                    <span>AiT3 智慧治理引擎</span>
+                  </div>
+                  <div class="text-[10px] font-mono text-cyan-300/80 mt-0.5">現行主力旗艦系統</div>
+                </div>
+
+                <!-- 懸浮徽章 1: ISO 27001 -->
+                <div class="absolute -top-3 -right-3 px-3 py-1.5 rounded-xl bg-slate-900/90 border border-emerald-500/50 text-[11px] font-mono font-bold text-emerald-300 shadow-lg flex items-center gap-1.5">
+                  <i data-lucide="check-circle" class="w-3.5 h-3.5 text-emerald-400"></i>
+                  <span>ISO 27001:2022</span>
+                </div>
+
+                <!-- 懸浮徽章 2: 3T 核心 -->
+                <div class="absolute -bottom-3 -left-3 px-3 py-1.5 rounded-xl bg-slate-900/90 border border-cyan-500/50 text-[11px] font-mono font-bold text-cyan-300 shadow-lg flex items-center gap-1.5">
+                  <i data-lucide="cpu" class="w-3.5 h-3.5 text-cyan-400"></i>
+                  <span>獨創 3T 治理架構</span>
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      <!-- 獨創 3T 智慧治理架構 -->
+      <section class="max-w-7xl mx-auto px-6 space-y-10">
+        
+        <div class="text-center max-w-2xl mx-auto space-y-2">
+          <div class="text-xs font-mono font-bold tracking-widest text-cyan-400 uppercase">PROPRIETARY 3T FRAMEWORK</div>
+          <h2 class="text-2xl sm:text-4xl font-extrabold text-white">終結紙本惡夢，系統化落實資安防衛</h2>
+          <p class="text-slate-400 text-xs sm:text-sm">以動態追蹤、法規溯源、數位存證三位一體，讓繁複的資安條文轉化為現場人員每日可執行的動態排程。</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          
+          <!-- 01. Track 動態追蹤 -->
+          <div class="glass-card p-7 rounded-3xl relative overflow-hidden group">
+            <div class="w-12 h-12 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 flex items-center justify-center font-mono font-black text-lg mb-5 group-hover:scale-110 transition">
+              01
+            </div>
+            <h3 class="text-lg font-bold text-white mb-2 flex items-center gap-2">
+              <span>Track 動態追蹤</span>
+              <i data-lucide="activity" class="w-4 h-4 text-cyan-400"></i>
+            </h3>
+            <p class="text-xs text-slate-300 leading-relaxed font-light">
+              主動監控企業日常資安作業落實進度，自動識別管理缺失並即時提示改善方向。將傳統抽屜裡的靜態規章，化為每日能落實的排程清單。
+            </p>
+            <div class="mt-6 pt-4 border-t border-slate-800/80 flex items-center justify-between text-[11px] font-mono text-cyan-300">
+              <span>資產與風險動態監控</span>
+              <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+            </div>
+          </div>
+
+          <!-- 02. Trace 法規溯源 -->
+          <div class="glass-card p-7 rounded-3xl relative overflow-hidden group border-teal-500/20">
+            <div class="w-12 h-12 rounded-2xl bg-teal-500/10 border border-teal-500/30 text-teal-300 flex items-center justify-center font-mono font-black text-lg mb-5 group-hover:scale-110 transition">
+              02
+            </div>
+            <h3 class="text-lg font-bold text-white mb-2 flex items-center gap-2">
+              <span>Trace 法規溯源</span>
+              <i data-lucide="git-branch" class="w-4 h-4 text-teal-400"></i>
+            </h3>
+            <p class="text-xs text-slate-300 leading-relaxed font-light">
+              AI 模型產出的每一項處置建議，皆百分之百對照 ISO 27001 條文與真實稽核查檢表。每一步決策都有明確標準背書，徹底杜絕 AI 幻覺。
+            </p>
+            <div class="mt-6 pt-4 border-t border-slate-800/80 flex items-center justify-between text-[11px] font-mono text-teal-300">
+              <span>93 項控制措施條文對應</span>
+              <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+            </div>
+          </div>
+
+          <!-- 03. Trail 合規軌跡 -->
+          <div class="glass-card p-7 rounded-3xl relative overflow-hidden group border-sky-500/20">
+            <div class="w-12 h-12 rounded-2xl bg-sky-500/10 border border-sky-500/30 text-sky-400 flex items-center justify-center font-mono font-black text-lg mb-5 group-hover:scale-110 transition">
+              03
+            </div>
+            <h3 class="text-lg font-bold text-white mb-2 flex items-center gap-2">
+              <span>Trail 合規軌跡</span>
+              <i data-lucide="fingerprint" class="w-4 h-4 text-sky-400"></i>
+            </h3>
+            <p class="text-xs text-slate-300 leading-relaxed font-light">
+              每次權限覆核、機台異動與弱點修補均自動生成具備數位時間戳記的存證鏈。當外部稽核機構抽查時，一鍵匯出完整合規歷程報告。
+            </p>
+            <div class="mt-6 pt-4 border-t border-slate-800/80 flex items-center justify-between text-[11px] font-mono text-sky-300">
+              <span>不可篡改時間戳記</span>
+              <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- 系統運行駕駛艙展示 -->
+      <section class="max-w-7xl mx-auto px-6">
+        <div class="glass-card rounded-3xl p-6 sm:p-8 border-cyan-500/30 shadow-[0_0_40px_rgba(6,182,212,0.15)] space-y-6">
+          
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-5 border-b border-slate-800 gap-4">
+            <div>
+              <div class="text-xs font-mono text-cyan-400 font-bold">SYSTEM RUNTIME COCKPIT</div>
+              <h3 class="text-lg font-extrabold text-white">AiT3 企業治理即時監控台</h3>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/40 text-emerald-300 font-mono text-xs">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                合規履約率：96.8% (達標)
+              </span>
+              <button onclick="navigateTo('product')" class="text-xs font-bold text-cyan-400 hover:text-cyan-300 flex items-center gap-1">
+                <span>完整模組功能 →</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- 駕駛艙即時表格 -->
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs font-mono">
+              <thead class="bg-slate-900/80 text-slate-400 border-b border-slate-800">
+                <tr>
+                  <th class="p-3.5">受控資產編號</th>
+                  <th class="p-3.5">設備 / 資料流名稱</th>
+                  <th class="p-3.5">場域節點</th>
+                  <th class="p-3.5">ISO 27001 控制項</th>
+                  <th class="p-3.5">安全狀態</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-800/60 text-slate-300 text-[11px]">
+                <tr class="hover:bg-slate-900/40 transition">
+                  <td class="p-3.5 text-cyan-300 font-bold">AST-2026-001</td>
+                  <td class="p-3.5 font-sans font-semibold text-white">ERP 核心營運資料庫 (SAP)</td>
+                  <td class="p-3.5 font-sans">南科機房 (IDC-A)</td>
+                  <td class="p-3.5">A.8.1 使用者端點設備防禦</td>
+                  <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">已存證加密</span></td>
+                </tr>
+                <tr class="hover:bg-slate-900/40 transition">
+                  <td class="p-3.5 text-cyan-300 font-bold">AST-2026-018</td>
+                  <td class="p-3.5 font-sans font-semibold text-white">CNC #05 航太精密加工五軸機台</td>
+                  <td class="p-3.5 font-sans">高雄路竹廠區</td>
+                  <td class="p-3.5">A.8.20 網路安全與隔離</td>
+                  <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">無人值守保護中</span></td>
+                </tr>
+                <tr class="hover:bg-slate-900/40 transition">
+                  <td class="p-3.5 text-cyan-300 font-bold">AST-2026-042</td>
+                  <td class="p-3.5 font-sans font-semibold text-white">連續塑膠射出溫控參數資料流</td>
+                  <td class="p-3.5 font-sans">台南永康生產線</td>
+                  <td class="p-3.5">A.5.33 營業秘密保護</td>
+                  <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">防篡改監聽正常</span></td>
+                </tr>
+                <tr class="hover:bg-slate-900/40 transition">
+                  <td class="p-3.5 text-cyan-300 font-bold">AST-2026-089</td>
+                  <td class="p-3.5 font-sans font-semibold text-white">財務部出納作業專用工作站</td>
+                  <td class="p-3.5 font-sans">總部行政中心</td>
+                  <td class="p-3.5">A.8.8 弱點管理排程</td>
+                  <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40">今日排程更新</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- 品牌故事與軟體實績（純粹 3 欄式設計） -->
+      <section class="max-w-7xl mx-auto px-6" id="brand-story-milestones">
+        <div class="glass-card rounded-3xl p-8 sm:p-12 border-cyan-500/30 relative overflow-hidden tech-grid-pattern border-glow-top space-y-12">
+          
+          <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-8 border-b border-slate-800/80 relative z-10">
+            <div class="space-y-3">
+              <div class="w-12 h-1 bg-gradient-to-r from-cyan-400 to-teal-400 rounded-full"></div>
+              <h2 class="text-2xl sm:text-4xl font-black text-white tracking-tight">品牌故事與軟體實績</h2>
+              <div class="text-xs font-mono text-cyan-400/80 flex items-center gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
+                <span>TRACKTECH ENTERPRISE SOFTWARE MILESTONES</span>
+              </div>
+            </div>
+            <div class="max-w-xl space-y-4">
+              <p class="text-xs sm:text-sm text-slate-300 leading-relaxed font-light">
+                循跡科技深耕企業級智慧治理與合規軟體研發。我們將主導稽核員邏輯與法規數據深度整合至 AiT3 智慧治理引擎，協助高科技供應鏈與製造企業化繁為簡，建構全方位、高自動化的數位合規防衛體系。
+              </p>
+              <div>
+                <button onclick="navigateTo('about')" class="px-5 py-2 rounded-xl bg-slate-900/90 hover:bg-cyan-500/10 border border-slate-700 hover:border-cyan-400/60 text-xs font-mono font-bold text-white hover:text-cyan-300 transition flex items-center gap-2 group shadow-sm">
+                  <span>MORE</span>
+                  <i data-lucide="arrow-right" class="w-3.5 h-3.5 text-cyan-400 group-hover:translate-x-1 transition-transform"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3 大動態累積計數器（無髒亂光斑） -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 text-center relative z-10">
+            
+            <div class="p-6 rounded-2xl bg-slate-900/40 border border-slate-800/80 hover:border-cyan-500/30 transition group">
+              <div class="text-4xl sm:text-5xl lg:text-6xl font-black font-mono tracking-tight bg-gradient-to-r from-cyan-300 via-teal-200 to-emerald-300 bg-clip-text text-transparent counter-item" data-target="2015" data-suffix="">
+                2015
+              </div>
+              <div class="text-xs sm:text-sm font-bold text-slate-200 tracking-wider mt-3">創立於</div>
+              <div class="text-[10px] font-mono text-slate-400 mt-1">深耕企業智慧治理系統</div>
+            </div>
+
+            <div class="p-6 rounded-2xl bg-slate-900/40 border border-slate-800/80 hover:border-cyan-500/30 transition group">
+              <div class="text-4xl sm:text-5xl lg:text-6xl font-black font-mono tracking-tight bg-gradient-to-r from-cyan-300 via-teal-200 to-emerald-300 bg-clip-text text-transparent counter-item" data-target="100" data-suffix="+">
+                100+
+              </div>
+              <div class="text-xs sm:text-sm font-bold text-slate-200 tracking-wider mt-3">企業與指標客戶採用</div>
+              <div class="text-[10px] font-mono text-slate-400 mt-1">製造業與供應鏈信賴採用</div>
+            </div>
+
+            <div class="p-6 rounded-2xl bg-slate-900/40 border border-slate-800/80 hover:border-cyan-500/30 transition group">
+              <div class="text-4xl sm:text-5xl lg:text-6xl font-black font-mono tracking-tight bg-gradient-to-r from-cyan-300 via-teal-200 to-emerald-300 bg-clip-text text-transparent counter-item" data-target="300" data-suffix="+">
+                300+
+              </div>
+              <div class="text-xs sm:text-sm font-bold text-slate-200 tracking-wider mt-3">系統輔助驗證案例</div>
+              <div class="text-[10px] font-mono text-slate-400 mt-1">稽核查檢高效率通過</div>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      <!-- 首頁底部呼籲帶 -->
+      <section class="max-w-7xl mx-auto px-6">
+        <div class="rounded-3xl bg-gradient-to-r from-slate-900 via-cyan-950 to-slate-900 border border-cyan-500/40 p-8 sm:p-12 flex flex-col md:flex-row items-center justify-between gap-8 shadow-[0_0_50px_rgba(6,182,212,0.2)]">
+          <div class="space-y-2 text-center md:text-left">
+            <h3 class="text-xl sm:text-2xl font-extrabold text-white">準備好以 AiT3 建立不可撼動的資安合規基石了嗎？</h3>
+            <p class="text-xs sm:text-sm text-slate-300 max-w-xl">循跡科技專責團隊將為您評估導入時程、產線架構規劃與預算效益。</p>
+          </div>
+          <button onclick="navigateTo('contact')" class="px-7 py-3.5 rounded-xl font-bold text-slate-950 bg-gradient-to-r from-cyan-400 to-emerald-400 hover:scale-105 transition shadow-lg whitespace-nowrap text-sm flex items-center gap-2">
+            <span>前往聯絡我們</span>
+            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- ==============================================
+         頁面 2：最新消息 (NEWS)
+         ============================================== -->
+    <div id="view-news" class="page-view hidden space-y-12 pb-24 max-w-7xl mx-auto px-6 pt-10">
+      
+      <div class="space-y-4 border-b border-slate-800 pb-8">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-xs font-mono text-cyan-300">
+          <span>TRACKTECH NEWS & INSIGHTS</span>
+        </div>
+        <h1 class="text-3xl sm:text-4xl font-black text-white tracking-tight">最新消息與官方公告</h1>
+        <p class="text-slate-400 text-xs sm:text-sm max-w-2xl">掌握循跡科技 AiT3 主力軟體更新、ISO 27001 實證案例發布、技術研討會及產業合規藍圖動態。</p>
+        
+        <div class="flex flex-wrap gap-2 pt-4 text-xs font-semibold">
+          <button onclick="filterNews('all')" id="nbtn-all" class="px-4 py-2 rounded-xl bg-cyan-500 text-slate-950 font-bold">全部消息</button>
+          <button onclick="filterNews('product')" id="nbtn-product" class="px-4 py-2 rounded-xl bg-slate-900 text-slate-300 hover:text-white border border-slate-800">產品升級</button>
+          <button onclick="filterNews('case')" id="nbtn-case" class="px-4 py-2 rounded-xl bg-slate-900 text-slate-300 hover:text-white border border-slate-800">驗證實績</button>
+          <button onclick="filterNews('event')" id="nbtn-event" class="px-4 py-2 rounded-xl bg-slate-900 text-slate-300 hover:text-white border border-slate-800">活動與研討</button>
+        </div>
+      </div>
+
+      <!-- 置頂焦點新聞 -->
+      <div class="glass-card rounded-3xl p-6 sm:p-8 border-cyan-500/40 relative overflow-hidden grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        <div class="lg:col-span-8 space-y-3">
+          <div class="flex items-center gap-3 text-xs font-mono">
+            <span class="px-2.5 py-1 rounded bg-cyan-400/20 text-cyan-300 font-bold border border-cyan-400/40">最新焦點</span>
+            <span class="text-slate-400">2026 年 8 月 18 日</span>
+            <span class="text-slate-500">•</span>
+            <span class="text-emerald-400">產品重大發布</span>
+          </div>
+          <h3 class="text-xl sm:text-2xl font-extrabold text-white">主力軟體 AiT3 推出 v2.6 版本：全面強化 ISO 27001:2022 條文自動映射與時間戳記驗證</h3>
+          <p class="text-xs sm:text-sm text-slate-300 leading-relaxed font-light">
+            新版本大幅提升弱點掃描排程演算速度，針對台灣高科技製造工控機台與無專職網管環境，提供專屬的「無人值守流量基線阻斷機制」，助企業大幅節省日常維運工時。
+          </p>
+        </div>
+        <div class="lg:col-span-4 flex justify-center">
+          <div class="w-full p-6 rounded-2xl bg-slate-900/90 border border-slate-800 text-center space-y-3">
+            <div class="text-xs font-mono text-slate-400">驗證時程再壓縮</div>
+            <div class="text-2xl font-black text-cyan-400 font-mono">平均 2.2 個月</div>
+            <div class="text-[11px] text-slate-500">順利取得國際第三方稽核通過</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 新聞網格清單 -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="newsContainer">
+        
+        <article class="glass-card p-6 rounded-2xl space-y-4 flex flex-col justify-between news-card" data-category="case">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between text-[11px] font-mono">
+              <span class="text-emerald-400">驗證實績</span>
+              <span class="text-slate-500">2026-07-28</span>
+            </div>
+            <h4 class="text-base font-bold text-white hover:text-cyan-300 transition cursor-pointer">
+              高雄岡山精密模具大廠導入 AiT3：無專職 IT 順利通過第三方驗證
+            </h4>
+            <p class="text-xs text-slate-400 leading-relaxed">
+              廠區 CNC 加工設備透過 AiT3 建立無干擾防護，在 2.5 個月內備齊所有稽核查檢證據，省下 55% 顧問輔導開銷。
+            </p>
+          </div>
+          <div class="pt-4 border-t border-slate-800/80 text-[11px] font-mono text-cyan-400 flex items-center gap-1">
+            <span>閱讀完整案例報導</span>
+            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+          </div>
+        </article>
+
+        <article class="glass-card p-6 rounded-2xl space-y-4 flex flex-col justify-between news-card" data-category="product">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between text-[11px] font-mono">
+              <span class="text-cyan-400">產品升級</span>
+              <span class="text-slate-500">2026-06-15</span>
+            </div>
+            <h4 class="text-base font-bold text-white hover:text-cyan-300 transition cursor-pointer">
+              AiT3 智慧治理引擎完成 3T 核心法規庫深度校驗
+            </h4>
+            <p class="text-xs text-slate-400 leading-relaxed">
+              研發團隊全面校正 RAG 決策庫，確保 AiT3 系統每一步計算建議均 100% 依循 ISO 27001:2022 最新國際審驗標準。
+            </p>
+          </div>
+          <div class="pt-4 border-t border-slate-800/80 text-[11px] font-mono text-cyan-400 flex items-center gap-1">
+            <span>檢視技術白皮書</span>
+            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+          </div>
+        </article>
+
+        <article class="glass-card p-6 rounded-2xl space-y-4 flex flex-col justify-between news-card" data-category="event">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between text-[11px] font-mono">
+              <span class="text-teal-400">活動與研討</span>
+              <span class="text-slate-500">2026-05-30</span>
+            </div>
+            <h4 class="text-base font-bold text-white hover:text-cyan-300 transition cursor-pointer">
+              南台灣高科技供應鏈資安合規論壇：AiT3 實機展示吸引近百家企業參與
+            </h4>
+            <p class="text-xs text-slate-400 leading-relaxed">
+              現場演示如何以動態儀表板在 10 分鐘內產出 ISO 27001 稽核所需之資產與風險軌跡清單，深獲產業界熱烈回響。
+            </p>
+          </div>
+          <div class="pt-4 border-t border-slate-800/80 text-[11px] font-mono text-cyan-400 flex items-center gap-1">
+            <span>回顧活動精華</span>
+            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+          </div>
+        </article>
+
+      </div>
+
+    </div>
+
+    <!-- ==============================================
+         頁面 3：產品 (PRODUCT)
+         ============================================== -->
+    <div id="view-product" class="page-view hidden space-y-16 pb-24 max-w-7xl mx-auto px-6 pt-10">
+      
+      <div class="glass-card rounded-3xl p-8 sm:p-12 border-cyan-500/30 relative overflow-hidden">
+        <div class="max-w-3xl space-y-4">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-xs font-mono text-cyan-300">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+            <span>FLAGSHIP PRODUCT ・ 現行主力旗艦軟體</span>
+          </div>
+          <h1 class="text-3xl sm:text-5xl font-black text-white tracking-tight">AiT3 – 企業資安治理暨風險管理追蹤系統</h1>
+          <p class="text-slate-300 text-sm sm:text-base leading-relaxed font-light">
+            將資深主導稽核員邏輯與 RAG 模型融合，專為缺乏專職資安人力的企業量身定制。提供「動態追蹤、法規溯源、數位存證」三位一體的治理體系，終結紙本與 Excel 記錄的混亂。
+          </p>
+
+          <div class="pt-4 flex flex-wrap gap-3">
+            <button onclick="navigateTo('contact')" class="px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-400 to-emerald-400 text-slate-950 font-bold text-xs sm:text-sm hover:scale-105 transition shadow-lg flex items-center gap-2">
+              <span>聯絡我們了解更多</span>
+              <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </button>
+            <a href="#future-matrix" class="px-6 py-3 rounded-xl bg-slate-900 border border-slate-700 text-slate-300 hover:text-white font-semibold text-xs sm:text-sm transition flex items-center gap-1.5">
+              <span>探索未來產品矩陣</span>
+              <i data-lucide="compass" class="w-4 h-4 text-cyan-400"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- AiT3 六大專業合規模組 -->
+      <div class="space-y-6">
+        <div class="flex items-center justify-between">
+          <div>
+            <div class="text-xs font-mono text-cyan-400 font-bold">AIT3 CORE MODULES</div>
+            <h3 class="text-2xl font-black text-white">AiT3 六大專業合規模組</h3>
+          </div>
+          <span class="text-xs text-slate-400 font-mono">100% 覆蓋 ISO 27001:2022 控制措施</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          
+          <div class="glass-card p-6 rounded-2xl space-y-3">
+            <div class="w-10 h-10 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center font-mono font-bold">01</div>
+            <h4 class="text-base font-bold text-white">資產管理 (Asset)</h4>
+            <p class="text-xs text-slate-400 leading-relaxed">
+              全面盤點伺服器、PC 與產線機台。自動綁定保管人與重要性等級，確保稽核實物查檢帳實相符。
+            </p>
+          </div>
+
+          <div class="glass-card p-6 rounded-2xl space-y-3">
+            <div class="w-10 h-10 rounded-xl bg-teal-500/10 text-teal-400 flex items-center justify-center font-mono font-bold">02</div>
+            <h4 class="text-base font-bold text-white">資料盤點 (Data Flow)</h4>
+            <p class="text-xs text-slate-400 leading-relaxed">
+              掌握核心配方與客戶資料流向。釐清營業秘密在廠區內外的存取邊界，防範不當外傳與意外洩漏。
+            </p>
+          </div>
+
+          <div class="glass-card p-6 rounded-2xl space-y-3">
+            <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center font-mono font-bold">03</div>
+            <h4 class="text-base font-bold text-white">風險處理 (Risk Matrix)</h4>
+            <p class="text-xs text-slate-400 leading-relaxed">
+              演算法計算風險，擺脫憑感覺填表。自動以威脅機率與營運衝擊換算風險值，給予可落實的降規方案。
+            </p>
+          </div>
+
+          <div class="glass-card p-6 rounded-2xl space-y-3">
+            <div class="w-10 h-10 rounded-xl bg-sky-500/10 text-sky-400 flex items-center justify-center font-mono font-bold">04</div>
+            <h4 class="text-base font-bold text-white">弱點管理 (Vulnerability)</h4>
+            <p class="text-xs text-slate-400 leading-relaxed">
+              主動提示已知漏洞，預先建立防護線。自動對照漏洞庫標示修補順序，防範勒索軟體在產線機台蔓延。
+            </p>
+          </div>
+
+          <div class="glass-card p-6 rounded-2xl space-y-3">
+            <div class="w-10 h-10 rounded-xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center font-mono font-bold">05</div>
+            <h4 class="text-base font-bold text-white">合規稽核 (Audit Engine)</h4>
+            <p class="text-xs text-slate-400 leading-relaxed">
+              定期排程查核任務，留存證據鏈。自動發送稽核清單至各單位主管，面對第三方抽查快速調出完整記錄。
+            </p>
+          </div>
+
+          <div class="glass-card p-6 rounded-2xl space-y-3">
+            <div class="w-10 h-10 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center font-mono font-bold">06</div>
+            <h4 class="text-base font-bold text-white">事件應變 (Incident Plan)</h4>
+            <p class="text-xs text-slate-400 leading-relaxed">
+              標準化通報指引與處置 SOP。提供非技術現場人員也能依循的通報與斷網指引，把營運損失降至最低。
+            </p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- 與傳統方案比較表 -->
+      <div class="glass-card rounded-3xl p-6 sm:p-8 border-cyan-500/30 overflow-hidden">
+        <h3 class="text-lg font-bold text-white mb-4">AiT3 智慧治理系統 vs. 傳統方案比較表</h3>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs sm:text-sm font-sans">
+            <thead class="bg-slate-900/90 text-slate-400 border-b border-slate-800">
+              <tr>
+                <th class="p-3.5">比較指標</th>
+                <th class="p-3.5 text-cyan-300 font-bold bg-cyan-500/10">AiT3 智慧治理軟體 (主力)</th>
+                <th class="p-3.5 text-slate-400">國內傳統純表單工具</th>
+                <th class="p-3.5 text-slate-400">國外大型 SaaS 平台</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-800 text-slate-300 text-xs">
+              <tr>
+                <td class="p-3.5 font-semibold text-white">系統功能定位</td>
+                <td class="p-3.5 text-cyan-300 font-bold bg-cyan-500/5">AI 決策引導與自動排程</td>
+                <td class="p-3.5 text-slate-400">純靜態表單，無決策輔助</td>
+                <td class="p-3.5 text-slate-400">全球法遵架構，設定繁複</td>
+              </tr>
+              <tr>
+                <td class="p-3.5 font-semibold text-white">在地產線適配</td>
+                <td class="p-3.5 text-emerald-300 font-bold bg-cyan-500/5">高度契合台灣製造業工控場景</td>
+                <td class="p-3.5 text-slate-400">部分在地，需大量人工自訂</td>
+                <td class="p-3.5 text-slate-400">偏重歐美標準 (GDPR/SOC2)</td>
+              </tr>
+              <tr>
+                <td class="p-3.5 font-semibold text-white">專業架構邏輯</td>
+                <td class="p-3.5 text-cyan-300 font-bold bg-cyan-500/5">國際主導稽核員驗證邏輯</td>
+                <td class="p-3.5 text-slate-400">無（需自行聘請外部顧問）</td>
+                <td class="p-3.5 text-slate-400">無（僅英文文件手冊）</td>
+              </tr>
+              <tr>
+                <td class="p-3.5 font-semibold text-white">預估導入成本</td>
+                <td class="p-3.5 font-mono font-black text-cyan-300 bg-cyan-500/5">約 20 ~ 25 萬元</td>
+                <td class="p-3.5 font-mono text-slate-400">約 8 萬/年 (外部輔導另計50萬)</td>
+                <td class="p-3.5 font-mono text-slate-400">每年約 30 ~ 40 萬起</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 未來產品矩陣與合規藍圖 -->
+      <div id="future-matrix" class="space-y-8 pt-6 border-t border-slate-800/80">
+        
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+          <div class="space-y-2">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-500/10 border border-teal-500/30 text-xs font-mono text-teal-300">
+              <span>SOLUTIONS ROADMAP & ECOSYSTEM</span>
+            </div>
+            <h3 class="text-2xl sm:text-3xl font-black text-white">未來合規軟體矩陣與藍圖規劃</h3>
+            <p class="text-slate-400 text-xs sm:text-sm max-w-2xl">
+              以目前主力 <strong class="text-cyan-300">AiT3</strong> 為企業治理中樞，循跡科技未來將陸續聯網拓展多項專精管理系統，完整對應 ISO 27001、ISO 27701 與台灣個人資料保護法之深層合規需求。
+            </p>
+          </div>
+          <span class="text-[11px] font-mono text-cyan-400 bg-cyan-950/60 border border-cyan-800/50 px-3 py-1.5 rounded-xl self-start md:self-auto">
+            循跡科技軟體生態系
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          
+          <!-- IARMS -->
+          <div class="glass-card p-7 rounded-3xl border-slate-800 hover:border-cyan-500/40 relative overflow-hidden flex flex-col justify-between group">
+            <div class="space-y-4">
+              <div class="flex items-center justify-between">
+                <span class="px-2.5 py-1 rounded-md bg-cyan-500/10 text-cyan-400 font-mono text-xs font-bold border border-cyan-500/20">企業合規首選</span>
+                <span class="text-[11px] font-mono text-slate-500">規劃擴充中</span>
+              </div>
+              <div class="space-y-1">
+                <h4 class="text-lg font-bold text-white group-hover:text-cyan-300 transition">IARMS</h4>
+                <div class="text-xs font-semibold text-cyan-400">資產盤點及風險評估系統</div>
+              </div>
+              <p class="text-xs text-slate-400 leading-relaxed font-light">
+                協助組織遵循 ISO/IEC 27001 與供應鏈規範。系統化盤點軟硬體資訊資產，AI 自動識別威脅與控制缺口，自動產出適用性聲明書（SOA），大幅提升內外部稽核對接效率。
+              </p>
+            </div>
+            <div class="mt-6 pt-4 border-t border-slate-800/70 flex items-center justify-between text-[11px] font-mono text-slate-400">
+              <span>產出標準化 SOA 報告</span>
+              <i data-lucide="arrow-up-right" class="w-4 h-4 text-cyan-400"></i>
+            </div>
+          </div>
+
+          <!-- PDRMS -->
+          <div class="glass-card p-7 rounded-3xl border-slate-800 hover:border-teal-500/40 relative overflow-hidden flex flex-col justify-between group">
+            <div class="space-y-4">
+              <div class="flex items-center justify-between">
+                <span class="px-2.5 py-1 rounded-md bg-teal-500/10 text-teal-400 font-mono text-xs font-bold border border-teal-500/20">個資合規首選</span>
+                <span class="text-[11px] font-mono text-slate-500">規劃擴充中</span>
+              </div>
+              <div class="space-y-1">
+                <h4 class="text-lg font-bold text-white group-hover:text-teal-300 transition">PDRMS</h4>
+                <div class="text-xs font-semibold text-teal-400">個資盤點及風險評估系統</div>
+              </div>
+              <p class="text-xs text-slate-400 leading-relaxed font-light">
+                遵循台灣個人資料保護法、ISO 27701 及 GDPR 隱私標準。透過個資生命週期掃描與自動化 PIA 隱私衝擊評估，釐清資料流向並防範資料外洩風險，建立嚴密隱私治理防線。
+              </p>
+            </div>
+            <div class="mt-6 pt-4 border-t border-slate-800/70 flex items-center justify-between text-[11px] font-mono text-slate-400">
+              <span>PIA 個資衝擊評估</span>
+              <i data-lucide="arrow-up-right" class="w-4 h-4 text-teal-400"></i>
+            </div>
+          </div>
+
+          <!-- DRMS -->
+          <div class="glass-card p-7 rounded-3xl border-slate-800 hover:border-sky-500/40 relative overflow-hidden flex flex-col justify-between group">
+            <div class="space-y-4">
+              <div class="flex items-center justify-between">
+                <span class="px-2.5 py-1 rounded-md bg-sky-500/10 text-sky-400 font-mono text-xs font-bold border border-sky-500/20">數位風險首選</span>
+                <span class="text-[11px] font-mono text-slate-500">規劃擴充中</span>
+              </div>
+              <div class="space-y-1">
+                <h4 class="text-lg font-bold text-white group-hover:text-sky-300 transition">DRMS</h4>
+                <div class="text-xs font-semibold text-sky-400">程序文件及記錄管理系統</div>
+              </div>
+              <p class="text-xs text-slate-400 leading-relaxed font-light">
+                遵循 ISO/IEC 27001 各類管理體系之文件管制規範。提供自動化版本控制、權限審核與完整調閱軌跡，高效管理資安四階文件與日常應調紀錄，確保文件現行有效。
+              </p>
+            </div>
+            <div class="mt-6 pt-4 border-t border-slate-800/70 flex items-center justify-between text-[11px] font-mono text-slate-400">
+              <span>四階文件版本管制</span>
+              <i data-lucide="arrow-up-right" class="w-4 h-4 text-sky-400"></i>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ==============================================
+         頁面 4：關於我們 (ABOUT)
+         ============================================== -->
+    <div id="view-about" class="page-view hidden space-y-12 pb-24 max-w-7xl mx-auto px-6 pt-10">
+      
+      <div class="glass-card rounded-3xl p-8 sm:p-12 border-cyan-500/30 relative overflow-hidden">
+        <div class="max-w-3xl space-y-4">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-xs font-mono text-cyan-300">
+            <span>ABOUT TRACKTECH</span>
+          </div>
+          <h1 class="text-3xl sm:text-5xl font-black text-white tracking-tight">循跡科技股份有限公司</h1>
+          <p class="text-slate-300 text-sm sm:text-base leading-relaxed font-light">
+            循跡科技專注於企業級智慧軟體之核心演算法與資安治理產品研發。我們深知台灣高科技製造業、工控產線與中小企業在面對國際供應鏈稽核與 ISO 27001 驗證時的痛點，以現行主力產品 <strong class="text-cyan-400">AiT3 智慧治理系統</strong>，將高門檻的資安合規轉化為每位從業人員日常可執行的自動化流程。
+          </p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="glass-card p-7 rounded-2xl space-y-3">
+          <div class="w-10 h-10 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center font-bold">01</div>
+          <h3 class="text-base font-bold text-white">專業稽核邏輯演算法化</h3>
+          <p class="text-xs text-slate-400 leading-relaxed font-light">
+            將國際資安主導稽核員長年的實務驗證邏輯沉澱為核心演算模型，確保軟體產出的每項判定均符合最新法規與國際標準。
+          </p>
+        </div>
+
+        <div class="glass-card p-7 rounded-2xl space-y-3">
+          <div class="w-10 h-10 rounded-xl bg-teal-500/10 text-teal-400 flex items-center justify-center font-bold">02</div>
+          <h3 class="text-base font-bold text-white">原始機敏數據零儲存</h3>
+          <p class="text-xs text-slate-400 leading-relaxed font-light">
+            遵循嚴格的資安架構，系統僅記錄管理歷程與雜湊存證（Hash），絕不儲存企業的原始營運機密與商業配方，徹底消除外部洩漏風險。
+          </p>
+        </div>
+
+        <div class="glass-card p-7 rounded-2xl space-y-3">
+          <div class="w-10 h-10 rounded-xl bg-sky-500/10 text-sky-400 flex items-center justify-center font-bold">03</div>
+          <h3 class="text-base font-bold text-white">深耕本土產業場域</h3>
+          <p class="text-xs text-slate-400 leading-relaxed font-light">
+            從 CNC 精密加工、連續塑膠射出溫控到現代雲端軟體，AiT3 以高度在地化的實務經驗，協助無專職 IT 編制的企業也能從容應對國際供應鏈檢核。
+          </p>
+        </div>
+      </div>
+
+      <div class="glass-card p-8 rounded-3xl border-slate-800 space-y-4">
+        <h3 class="text-lg font-bold text-white">台灣本土研發・國際級資安治理高度</h3>
+        <p class="text-xs sm:text-sm text-slate-300 leading-relaxed font-light">
+          我們相信，資安治理不應該是一年一度應付稽核的繁雜紙本作業，而是企業長期經營的數位防衛肌肉。循跡科技將持續精進 AiT3 主力系統，並協同 IARMS、PDRMS、DRMS 等未來解決方案矩陣，為全球供應鏈中的台灣企業打造最堅強的合規後盾。
+        </p>
+      </div>
+
+    </div>
+
+    <!-- ==============================================
+         頁面 5：聯絡我們 (CONTACT)
+         ============================================== -->
+    <div id="view-contact" class="page-view hidden space-y-12 pb-24 max-w-5xl mx-auto px-6 pt-10">
+      
+      <div class="text-center space-y-3">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-xs font-mono text-cyan-300">
+          <span>GET IN TOUCH</span>
+        </div>
+        <h1 class="text-3xl sm:text-5xl font-black text-white tracking-tight">與循跡科技專責顧問接洽</h1>
+        <p class="text-slate-400 text-xs sm:text-sm max-w-xl mx-auto">
+          歡迎填寫需求，我們將在 1 個工作天內由專責資安顧問主動與您聯繫。
+        </p>
+      </div>
+
+      <div class="glass-card p-8 sm:p-10 rounded-3xl border-cyan-500/30 shadow-2xl">
+        <form id="contactForm" onsubmit="handleFormSubmit(event)" class="space-y-5 text-xs sm:text-sm">
+          
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div>
+              <label class="block font-semibold text-slate-300 mb-1.5">公司全名 *</label>
+              <input required type="text" placeholder="例如：循跡科技股份有限公司" class="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 transition" />
+            </div>
+            <div>
+              <label class="block font-semibold text-slate-300 mb-1.5">聯絡人姓名與職稱 *</label>
+              <input required type="text" placeholder="例如：林經理 / 資訊長" class="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 transition" />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div>
+              <label class="block font-semibold text-slate-300 mb-1.5">公務電子信箱 *</label>
+              <input required type="email" placeholder="name@company.com.tw" class="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 transition" />
+            </div>
+            <div>
+              <label class="block font-semibold text-slate-300 mb-1.5">聯絡電話 / 分機 *</label>
+              <input required type="tel" placeholder="06-303-2133" class="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 transition" />
+            </div>
+          </div>
+
+          <div>
+            <label class="block font-semibold text-slate-300 mb-1.5">主要洽詢項目</label>
+            <select class="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-white focus:outline-none focus:border-cyan-400 transition">
+              <option>AiT3 智慧資安治理系統諮詢 (主力產品)</option>
+              <option>ISO 27001:2022 導入諮詢與時程評估</option>
+              <option>製造業/工控產線無人值守資安盤點</option>
+              <option>未來產品矩陣 (IARMS / PDRMS / DRMS) 整合洽詢</option>
+              <option>經銷代理與技術策略合作</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block font-semibold text-slate-300 mb-1.5">備註需求（選填）</label>
+            <textarea rows="3" placeholder="請簡要描述目前貴司的設備規模、人員數或預計取得證書的時間點..." class="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 transition"></textarea>
+          </div>
+
+          <button type="submit" class="w-full py-4 rounded-xl font-bold text-slate-950 bg-gradient-to-r from-cyan-400 via-teal-300 to-emerald-400 hover:scale-[1.01] transition shadow-[0_0_30px_rgba(6,182,212,0.4)] flex items-center justify-center gap-2 text-sm sm:text-base">
+            <span>送出洽詢表單</span>
+            <i data-lucide="send" class="w-4 h-4 text-slate-950"></i>
+          </button>
+
+        </form>
+
+        <div id="formSuccess" class="hidden p-8 rounded-2xl bg-emerald-500/10 border border-emerald-500/40 text-center space-y-3">
+          <i data-lucide="check-circle" class="w-12 h-12 text-emerald-400 mx-auto animate-bounce"></i>
+          <h3 class="text-base font-bold text-white">需求單已成功送出！</h3>
+          <p class="text-xs text-slate-300">專責資安顧問將在 1 個工作天內主動與您聯絡。</p>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- 企業官方頁尾 -->
+  <footer class="bg-slate-950 border-t border-slate-800/80 text-slate-400 text-xs py-14">
+    <div class="max-w-7xl mx-auto px-6 space-y-10">
+      
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-8 pb-8 border-b border-slate-800/80">
+        
+        <div class="md:col-span-4 space-y-3.5">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-xl bg-slate-900 border border-cyan-500/30 p-1.5 flex items-center justify-center">
+              <img src="http://usis.com.tw/wp-content/uploads/2026/07/ait3_LOGO-scaled.png" alt="Logo" class="w-full h-full object-contain" />
+            </div>
+            <div>
+              <div class="text-white font-bold text-sm">循跡科技股份有限公司</div>
+              <div class="text-[10px] font-mono text-cyan-400">TrackTech Co., Ltd.</div>
+            </div>
+          </div>
+          <p class="text-[11px] text-slate-400 leading-relaxed font-light">
+            專注於企業級軟體研發與資安治理追蹤。以現行主力產品 AiT3 與獨創 3T 智慧架構，賦能台灣製造業與供應鏈輕鬆應對國際稽核挑戰。
+          </p>
+        </div>
+
+        <div class="md:col-span-2 space-y-2.5">
+          <div class="text-white font-bold text-xs font-mono uppercase tracking-wider">網站導覽</div>
+          <ul class="space-y-2 text-[11px]">
+            <li><a href="javascript:void(0)" onclick="navigateTo('home')" class="hover:text-cyan-400 transition">首頁</a></li>
+            <li><a href="javascript:void(0)" onclick="navigateTo('news')" class="hover:text-cyan-400 transition">最新消息</a></li>
+            <li><a href="javascript:void(0)" onclick="navigateTo('product')" class="hover:text-cyan-400 transition">產品</a></li>
+            <li><a href="javascript:void(0)" onclick="navigateTo('about')" class="hover:text-cyan-400 transition">關於我們</a></li>
+            <li><a href="javascript:void(0)" onclick="navigateTo('contact')" class="hover:text-cyan-400 transition">聯絡我們</a></li>
+          </ul>
+        </div>
+
+        <div class="md:col-span-3 space-y-2.5">
+          <div class="text-white font-bold text-xs font-mono uppercase tracking-wider">合規產品矩陣</div>
+          <ul class="space-y-2 text-[11px]">
+            <li class="font-bold text-cyan-300">★ AiT3 – 資安治理與風險追蹤 (現行主力)</li>
+            <li class="text-slate-400">• IARMS – 資產盤點及風險評估 (藍圖規劃)</li>
+            <li class="text-slate-400">• PDRMS – 個資盤點及風險評估 (藍圖規劃)</li>
+            <li class="text-slate-400">• DRMS – 程序文件及記錄管理 (藍圖規劃)</li>
+            <li class="text-slate-500 pt-1">全方位對接 ISO 27001 / 27701 / 個資法</li>
+          </ul>
+        </div>
+
+        <div class="md:col-span-3 space-y-2.5">
+          <div class="text-white font-bold text-xs font-mono uppercase tracking-wider">循跡科技官方服務窗口</div>
+          <ul class="space-y-2 text-[11px] font-mono">
+            <li>諮詢專線：06-303-2133</li>
+            <li>公務信箱：service@tracktech.com.tw</li>
+            <li>核心產品：AiT3 智慧治理引擎</li>
+            <li>服務據點：台南 / 高雄 / 台北</li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-slate-500 font-mono">
+        <div>© 2026 循跡科技股份有限公司 TrackTech Co., Ltd. 版權所有</div>
+        <div class="flex gap-4">
+          <span>ISO 27001 合規聲明</span>
+          <span>•</span>
+          <span>隱私權保護政策</span>
+          <span>•</span>
+          <span>營業秘密保護規範</span>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- 核心互動 JavaScript 邏輯 -->
+  <script>
+    lucide.createIcons();
+
+    // 1. 動態粒子循跡畫布 (Interactive Trace Particles)
+    const canvas = document.getElementById('traceCanvas');
+    const ctx = canvas.getContext('2d');
+    let width, height;
+    let particles = [];
+    const particleCount = 45;
+
+    function resizeCanvas() {
+      if (!canvas) return;
+      width = canvas.width = canvas.parentElement.offsetWidth;
+      height = canvas.height = canvas.parentElement.offsetHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    class Particle {
+      constructor() {
+        this.reset();
+      }
+      reset() {
+        this.x = Math.random() * width;
+        this.y = Math.random() * height;
+        this.vx = (Math.random() - 0.5) * 0.7;
+        this.vy = (Math.random() - 0.5) * 0.7;
+        this.radius = Math.random() * 1.5 + 0.8;
+        this.color = Math.random() > 0.5 ? '#06b6d4' : '#2dd4bf';
+      }
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        if (this.x < 0 || this.x > width) this.vx *= -1;
+        if (this.y < 0 || this.y > height) this.vy *= -1;
+      }
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
+        ctx.fill();
+      }
+    }
+
+    for (let i = 0; i < particleCount; i++) {
+      particles.push(new Particle());
+    }
+
+    function animateParticles() {
+      ctx.clearRect(0, 0, width, height);
+
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 110) {
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.strokeStyle = `rgba(6, 182, 212, ${0.18 * (1 - dist / 110)})`;
+            ctx.lineWidth = 0.6;
+            ctx.stroke();
+          }
+        }
+      }
+
+      particles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+
+      requestAnimationFrame(animateParticles);
+    }
+    animateParticles();
+
+    // 2. 5 大核心頁面路由切換 (首頁 > 最新消息 > 產品 > 關於我們 > 聯絡我們)
+    function navigateTo(pageId) {
+      const pages = document.querySelectorAll('.page-view');
+      pages.forEach(p => {
+        p.classList.add('hidden');
+        p.classList.remove('page-fade-in');
+      });
+
+      const target = document.getElementById('view-' + pageId);
+      if (target) {
+        target.classList.remove('hidden');
+        target.classList.add('page-fade-in');
+      }
+
+      // 更新導覽列高亮按鈕
+      const navBtns = document.querySelectorAll('.nav-btn');
+      navBtns.forEach(btn => {
+        if (btn.getAttribute('data-page') === pageId) {
+          btn.className = 'nav-btn px-4 py-2 rounded-xl text-cyan-400 bg-cyan-500/10 border border-cyan-500/30 transition';
+        } else {
+          btn.className = 'nav-btn px-4 py-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-900 border border-transparent hover:border-slate-700 transition';
+        }
+      });
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.location.hash = pageId;
+      lucide.createIcons();
+    }
+
+    // 手機版選單切換
+    function toggleMobileMenu() {
+      const m = document.getElementById('mobileMenu');
+      m.classList.toggle('hidden');
+      lucide.createIcons();
+    }
+
+    // 3. 最新消息分類篩選器
+    function filterNews(cat) {
+      const cards = document.querySelectorAll('.news-card');
+      cards.forEach(c => {
+        if (cat === 'all' || c.getAttribute('data-category') === cat) {
+          c.classList.remove('hidden');
+        } else {
+          c.classList.add('hidden');
+        }
+      });
+
+      const btns = ['all', 'product', 'case', 'event'];
+      btns.forEach(b => {
+        const el = document.getElementById('nbtn-' + b);
+        if (b === cat) {
+          el.className = 'px-4 py-2 rounded-xl bg-cyan-500 text-slate-950 font-bold';
+        } else {
+          el.className = 'px-4 py-2 rounded-xl bg-slate-900 text-slate-300 hover:text-white border border-slate-800';
+        }
+      });
+      lucide.createIcons();
+    }
+
+    // 4. 表單送出互動處理
+    function handleFormSubmit(e) {
+      e.preventDefault();
+      document.getElementById('contactForm').classList.add('hidden');
+      document.getElementById('formSuccess').classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    // 5. 品牌故事與實績計數器動態
+    let countersAnimated = false;
+    function runCounters() {
+      const counters = document.querySelectorAll('.counter-item');
+      counters.forEach(counter => {
+        const target = parseInt(counter.getAttribute('data-target'), 10);
+        const suffix = counter.getAttribute('data-suffix') || '';
+        const duration = 1800;
+        const startTime = performance.now();
+
+        function updateNumber(currentTime) {
+          const elapsed = currentTime - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          const easeProgress = 1 - (1 - progress) * (1 - progress);
+          const currentVal = Math.floor(easeProgress * target);
+
+          counter.textContent = currentVal + (progress === 1 ? suffix : '');
+
+          if (progress < 1) {
+            requestAnimationFrame(updateNumber);
+          } else {
+            counter.textContent = target + suffix;
+          }
+        }
+        requestAnimationFrame(updateNumber);
+      });
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !countersAnimated) {
+          countersAnimated = true;
+          runCounters();
+        }
+      });
+    }, { threshold: 0.25 });
+
+    const milestoneSection = document.getElementById('brand-story-milestones');
+    if (milestoneSection) {
+      observer.observe(milestoneSection);
+    }
+
+    // 6. 首頁 Hero 關鍵指標跑馬動畫 (Ease-out cubic)
+    function runHeroCounters() {
+      const heroCounters = document.querySelectorAll('.hero-counter');
+      heroCounters.forEach(counter => {
+        const target = parseInt(counter.getAttribute('data-target'), 10);
+        const suffix = counter.getAttribute('data-suffix') || '%';
+        const duration = 1600;
+        const startTime = performance.now();
+
+        function updateHeroNumber(currentTime) {
+          const elapsed = currentTime - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          const easeOut = 1 - Math.pow(1 - progress, 3);
+          const currentVal = Math.floor(easeOut * target);
+
+          counter.innerHTML = `${currentVal}<span class="text-lg text-teal-300">${suffix}</span>`;
+
+          if (progress < 1) {
+            requestAnimationFrame(updateHeroNumber);
+          } else {
+            counter.innerHTML = `${target}<span class="text-lg text-teal-300">${suffix}</span>`;
+          }
+        }
+        requestAnimationFrame(updateHeroNumber);
+      });
+    }
+
+    // 支援 hash 網址跳轉與開場動態
+    window.addEventListener('load', () => {
+      setTimeout(runHeroCounters, 200);
+
+      const hash = window.location.hash.replace('#', '');
+      if (['home', 'news', 'product', 'about', 'contact'].includes(hash)) {
+        navigateTo(hash);
+      } else {
+        navigateTo('home');
+      }
+    });
+
+    window.addEventListener('hashchange', () => {
+      const hash = window.location.hash.replace('#', '');
+      if (['home', 'news', 'product', 'about', 'contact'].includes(hash)) {
+        navigateTo(hash);
+      }
+    });
+  </script>
+
+</body>
+</html>
